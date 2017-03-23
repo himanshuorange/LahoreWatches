@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Lahore Watches</title>
+
     <script src="helper_files/jquery.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+    <script src="helper_files/firebase.js"></script>
 </head>
 <body>
 
@@ -16,6 +20,15 @@
 </div>
 <br>
 <div id="LoggedDiv" style="display:none;">
+
+    <br>
+    <button id="LogOutButton">
+
+        Logout
+
+    </button>
+
+    <br>
 
 
 </div>
@@ -60,14 +73,19 @@
             LoggedDiv.css({'display' : 'none'});
             LoginDiv.css({'display' : 'block'});
             localStorage.clear();
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
         }
         else
         {
             LoginDiv.css({'display' : 'none'});
             LoggedDiv.css({'display' : 'Block'});
-            LoggedDiv.html(' Welcome ' + username + ' ');
+            LoggedDiv.prepend(' Welcome ' + username + ' ');
+
+        }
+
+        if(cart == null || typeof cart == 'undefined' || cart == undefined)
+        {
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
 
         cart = localStorage.getItem('cart');
@@ -77,6 +95,21 @@
         CartDiv.click(function () {
 
             window.location.href = "cart.html";
+
+        });
+
+        $('#LogOutButton').click(function () {
+
+            localStorage.clear();
+            firebase.auth().signOut().then(function() {
+                localStorage.clear();
+                location.reload();
+            }, function(error) {
+                console.log(error.code);
+                console.log(error.message);
+                location.reload();
+            });
+
 
         });
 

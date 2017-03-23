@@ -1,9 +1,13 @@
 function logged(user) {
     $.post('/new-user',user.providerData[0],function (data,status) {
-        localStorage.setItem('user',JSON.stringify(User.providerData[0]));
+
+        console.log("Hello");
+        localStorage.setItem('username',user.providerData[0].email);
         localStorage.setItem('state','true');
-        console.log(user.providerData[0]);
-        window.location.href='/logged.html';
+        console.log(user.providerData[0].email);
+        console.log("Hello");
+        console.log(user.providerData);
+        window.location.href='index.html';
     });
 }
 
