@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+    <script src="helper_files/jquery.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+    <script src="helper_files/firebase.js"></script>
 </head>
 <body>
-
-    Hello World
-
+<button id="admin">ADMIN</button>
+<br><br>
+<h1 style="font-size: 30px" >LOG IN WITH</h1>
+<button id="facebook">FACEBOOK</button>
+<br>
+<button id="google">GOOGLE</button>
+<br>
+<button id="twitter">TWITTER</button>
 </body>
+<script src="helper_files/jquery.js"></script>
+<script src="helper_files/index.js"></script>
+<script>
+    $("#admin").click(function () {
+        window.location.href = 'admin.html';
+    })
+</script>
 </html>
+

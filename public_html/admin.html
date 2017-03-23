@@ -6,5 +6,26 @@
 </head>
 <body>
 
+// create a form to take all the necessary details about the watch from the admin
+
+<button id="submit">submit</button>
 </body>
+<script src="helper_files/jquery.js"></script>
+<script>
+    $("#submit").click(function () {
+        // enter the values in the blanks('')
+        var obj = {};
+            obj.watch_id='';
+            obj.type='';
+            obj.brand='';
+            obj.gender='';
+            obj.price='';
+            obj.case_shape='';
+            obj.strap='';
+            obj.collection='';
+            obj.display='';
+            $.post('/add_watch_details',obj,function (data,status) {
+            });
+    })
+</script>
 </html>
