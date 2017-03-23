@@ -2,11 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lahore Watches</title>
+    <script src="helper_files/jquery.js"></script>
 </head>
 <body>
 
-    Hello World
+    <div id="LoginDiv" style="display: none">
+
+        <a href="login.html">
+            <button>Login or SignUp</button>
+        </a>
+
+    </div>
+    <br>
+    <div id="LoggedDiv" style="display:none;">
+
+
+    </div>
+    <br>
+    <button id="cart">
+
+       <!--- A new page cart.html has to be made --->
+
+    </button>
+    <br><br>
+
+
+    <input type="text" placeholder="Search here" id="SearchBar">
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <button id="SearchSubmit">Search</button>
+
+    <br>
+
+    <button id="Brands">Brands</button>
+    <br>
+
+    <div id="results" style="display: none">
+
+    </div>
+
+
+<script>
+
+    var username = localStorage.getItem('username');
+    var cart = localStorage.getItem('cart');
+    var LoggedDiv = $('#LoggedDiv');
+    var LoginDiv = $('#LoginDiv');
+    var CartDiv = $('#cart');
+
+
+    function main()
+    {
+        if(username == null || username == undefined || typeof username == 'undefined')
+        {
+            LoggedDiv.css({'display' : 'none'});
+            LoginDiv.css({'display' : 'block'});
+            localStorage.clear();
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+        else
+        {
+            LoginDiv.css({'display' : 'none'});
+            LoggedDiv.css({'display' : 'Block'});
+            LoggedDiv.html(' Welcome ' + username + ' ');
+        }
+
+        cart = localStorage.getItem('cart');
+        cart = JSON.parse(cart);
+        CartDiv.html('Cart ' + '<br>' +  cart.length + '  items ');
+
+        CartDiv.click(function () {
+
+            window.location.href = "cart.html";
+
+        });
+
+
+    }
+
+    main();
+
+</script>
 
 </body>
 </html>
