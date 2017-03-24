@@ -64,7 +64,300 @@ function add_watch_details(obj,callback)
             });
 }
 
+function AddTemporaryData()
+{
+
+
+    var obj = [];
+
+    var id, type, brand, gender, price, caseShape, strap, collection, display;
+
+    var temp = {};
+
+    for(var i = 0 ; i < 100; ++i)
+    {
+        id = i;
+        type = (i % 3) + 1;
+        brand = 'Titan';
+        if(i % 2)
+        {
+            gender = 'Male';
+            caseShape = 'Square';
+            strap = 'Thin';
+            display = 'Clock';
+        }
+        else
+        {
+            gender = 'Female';
+            strap = 'Thick';
+            display = 'Digital';
+            caseShape = 'Round';
+        }
+
+        collection = (i / 10) + 1;
+
+        price = (i + 1) * 10;
+
+        obj.push({
+
+            UniqueId : id,
+            type : type,
+            brand : brand,
+            gender : gender,
+            price : price,
+            caseShape : caseShape,
+            strap : strap,
+            collection : collection,
+            display : display
+
+        });
+
+    }
+
+
+
+    for( i = 0 ; i < 100; ++i)
+    {
+        id = i + 100;
+        type = (i % 3) + 1;
+        brand = 'Rolex';
+        if(i % 2)
+        {
+            gender = 'Male';
+            caseShape = 'Square';
+            strap = 'Thin';
+            display = 'Clock';
+        }
+        else
+        {
+            gender = 'Female';
+            strap = 'Thick';
+            display = 'Digital';
+            caseShape = 'Round';
+        }
+
+        collection = (i / 10) + 1;
+
+        price = (i + 1) * 10;
+
+        obj.push({
+
+            UniqueId : id,
+            type : type,
+            brand : brand,
+            gender : gender,
+            price : price,
+            caseShape : caseShape,
+            strap : strap,
+            collection : collection,
+            display : display
+
+        });
+
+    }
+
+    for(i = 0 ; i < 100; ++i)
+    {
+        id = i + 200;
+        type = (i % 3) + 1;
+        brand = 'Sonata';
+        if(i % 2)
+        {
+            gender = 'Male';
+            caseShape = 'Square';
+            strap = 'Thin';
+            display = 'Clock';
+        }
+        else
+        {
+            gender = 'Female';
+            strap = 'Thick';
+            display = 'Digital';
+            caseShape = 'Round';
+        }
+
+        collection = (i / 10) + 1;
+
+        price = (i + 1) * 10;
+
+        obj.push({
+
+            UniqueId : id,
+            type : type,
+            brand : brand,
+            gender : gender,
+            price : price,
+            caseShape : caseShape,
+            strap : strap,
+            collection : collection,
+            display : display
+
+        });
+
+    }
+
+
+
+
+
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+
+        var handler = db.collection('watch-details');
+
+        handler.insertMany(obj, function (err, r) {
+
+            if(err)
+                throw err;
+
+            console.log(r);
+            console.log("done");
+
+
+        });
+
+
+    });
+
+
+}
+
+
+ // AddTemporaryData();
+
+
+function FetchTitan(callback) {
+
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+
+        var handler = db.collection('watch-details');
+
+        handler.find({brand : 'Titan'}).toArray(function (err, docs) {
+
+            callback(docs);
+
+        });
+
+    });
+
+}
+
+function FetchSonata(callback) {
+
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+
+        var handler = db.collection('watch-details');
+
+        handler.find({brand : 'Sonata'}).toArray(function (err, docs) {
+
+            callback(docs);
+
+        });
+
+    });
+
+
+
+}
+
+function FetchRolex(callback) {
+
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+
+        var handler = db.collection('watch-details');
+
+        handler.find({brand : 'Rolex'}).toArray(function (err, docs) {
+
+            callback(docs);
+
+        });
+
+    });
+
+
+
+}
+
+function GetFromID (id11, callback) {
+    console.log("Id is ");
+    console.log(id11);
+    console.log(typeof id11);
+
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+
+        var handler = db.collection('watch-details');
+
+        handler.find( {UniqueId : Number(id11)} ).toArray(function (err, docs) {
+
+            if(err)
+                throw err;
+
+            console.log("Passing in docs ");
+            console.log(docs);
+            callback(docs);
+
+        });
+
+    });
+
+
+}
+
+
+function GetCartItems(cart, callback) {
+
+
+   // cart = [1, 2,100, 200];
+
+    var temp = [];
+
+    for(var i = 0 ; i < cart.length; ++i)
+    {
+        temp.push({
+
+            UniqueId : Number(cart[i])
+        });
+    }
+
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+
+        var handler = db.collection('watch-details');
+
+        handler.find({ $or : temp }).toArray(function(err, docs)
+        {
+            if(err)
+                throw err;
+
+            console.log(docs);
+            callback(docs);
+
+        });
+
+
+    });
+
+}
+
+//GetCartItems();
+
+
 module.exports  = {
     new_user:new_user,
-    add_watch_details:add_watch_details
+    add_watch_details:add_watch_details,
+    FetchTitan : FetchTitan,
+    FetchRolex : FetchRolex,
+    FetchSonata : FetchSonata,
+    GetFromID : GetFromID,
+    GetCart : GetCartItems
 };

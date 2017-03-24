@@ -10,115 +10,320 @@
     <script src="helper_files/firebase.js"></script>
 </head>
 <body>
-
-<div id="LoginDiv" style="display: none">
-
-    <a href="login.html">
-        <button>Login or SignUp</button>
-    </a>
-
-</div>
-<br>
-<div id="LoggedDiv" style="display:none;">
-
+    <div id="LoginDiv" style="display: none">
+        <a href="login.html">
+            <button>Login or SignUp</button>
+        </a>
+    </div>
     <br>
-    <button id="LogOutButton">
+    <div id="LoggedDiv" style="display:none;">
 
-        Logout
+        <br>
+        <button id="LogOutButton">
+
+            Logout
+
+        </button>
+
+        <br>
+
+
+    </div>
+    <br>
+    <button id="cart">
+
+        <!--- A new page cart.html has to be made --->
 
     </button>
+    <br><br>
+
+
+    <input type="text" placeholder="Search here" id="SearchBar">
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <button id="SearchSubmit">Search</button>
 
     <br>
 
+    <button id="Brands">Brands</button>
+    <br>
 
-</div>
-<br>
-<button id="cart">
+    <div id="ListOfBrands" style="display: none">
+    <br>
 
-    <!--- A new page cart.html has to be made --->
-
-</button>
-<br><br>
-
-
-<input type="text" placeholder="Search here" id="SearchBar">
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-<button id="SearchSubmit">Search</button>
-
-<br>
-
-<button id="Brands">Brands</button>
-<br>
-
-<div id="results" style="display: none">
-
-</div>
+        <button id="Titan"> Titan </button>
+        <br>
+        <button id="Sonata"> Sonata </button>
+        <br>
+        <button id="Rolex"> Rolex </button>
+        <br>
 
 
-<script>
-
-    var username = localStorage.getItem('username');
-    var cart = localStorage.getItem('cart');
-    var LoggedDiv = $('#LoggedDiv');
-    var LoginDiv = $('#LoginDiv');
-    var CartDiv = $('#cart');
+    </div>
 
 
-    function main()
-    {
-        if(username == null || username == undefined || typeof username == 'undefined')
+    <div id="results" style="display: none">
+
+    </div>
+
+
+    <script>
+
+        var username = localStorage.getItem('username');
+        var cart = localStorage.getItem('cart');
+        var LoggedDiv = $('#LoggedDiv');
+        var LoginDiv = $('#LoginDiv');
+        var CartDiv = $('#cart');
+        var ListOfBrands = $('#ListOfBrands');
+        var Brands = $('#Brands');
+        var Titan = $('#Titan');
+        var Sonata = $('#Sonata');
+        var Rolex = $('#Rolex');
+        var Results = $('#results');
+
+        function main()
         {
-            LoggedDiv.css({'display' : 'none'});
-            LoginDiv.css({'display' : 'block'});
-            localStorage.clear();
-        }
-        else
-        {
-            LoginDiv.css({'display' : 'none'});
-            LoggedDiv.css({'display' : 'Block'});
-            LoggedDiv.prepend(' Welcome ' + username + ' ');
-
-        }
-
-        if(cart == null || typeof cart == 'undefined' || cart == undefined)
-        {
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        cart = localStorage.getItem('cart');
-        cart = JSON.parse(cart);
-        CartDiv.html('Cart ' + '<br>' +  cart.length + '  items ');
-
-        CartDiv.click(function () {
-
-            window.location.href = "cart.html";
-
-        });
-
-        $('#LogOutButton').click(function () {
-
-            localStorage.clear();
-            firebase.auth().signOut().then(function() {
+            if(username == null || username == undefined || typeof username == 'undefined')
+            {
+                LoggedDiv.css({'display' : 'none'});
+                LoginDiv.css({'display' : 'block'});
                 localStorage.clear();
-                location.reload();
-            }, function(error) {
-                console.log(error.code);
-                console.log(error.message);
-                location.reload();
+            }
+            else
+            {
+                LoginDiv.css({'display' : 'none'});
+                LoggedDiv.css({'display' : 'Block'});
+                LoggedDiv.prepend(' Welcome ' + username + ' ');
+
+            }
+
+            cart = localStorage.getItem('cart');
+
+            if(cart == null || typeof cart == 'undefined' || cart == undefined)
+            {
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            cart = localStorage.getItem('cart');
+            cart = JSON.parse(cart);
+            CartDiv.html('Cart ' + '<br>' +  cart.length + '  items ');
+
+            CartDiv.click(function () {
+
+                window.location.href = "cart.html";
+
+            });
+
+            $('#LogOutButton').click(function () {
+
+                localStorage.clear();
+                firebase.auth().signOut().then(function() {
+                    localStorage.clear();
+                    location.reload();
+                }, function(error) {
+                    console.log(error.code);
+                    console.log(error.message);
+                    location.reload();
+                });
+
+
             });
 
 
-        });
+            Brands.click(function () {
+
+                ListOfBrands.css({'display' : 'block'});
+
+            });
+
+            Titan.click(function () {
+
+                Results.html("Loading..");
+                Results.css({"display" : "block"});
+
+                var str = '';
+
+                $.post('/fetchTitan', {}, function (data, status) {
+
+                    console.log(status);
+                    console.log(data.docs[0]);
+                    
+                    
+                    for(var i = 0 ; i < data.docs.length; ++i)
+                    {
+                        str += '<p id="' + data.docs[i].UniqueId + '" class="ProductDetails">'
+                        /*id : id,
+                         type : type,
+                         brand : brand,
+                         gender : gender,
+                         price : price,
+                         caseShape : caseShape,
+                         strap : strap,
+                         collection : collection,
+                         display : display*/
+                        
+                        str += ('type : ' + data.docs[i].type + ' ||  ' );
+                        str += ('brand : ' + data.docs[i].brand + ' ||  ' );
+                        str += ('gender : ' + data.docs[i].gender + ' ||  ' );
+                        str += ('price : ' + data.docs[i].price + ' ||  ' );
+                        str += ('caseShape : ' + data.docs[i].caseShape + ' ||  ' );
+                        str += ('strap : ' + data.docs[i].strap + ' ||  ' );
+                        str += ('collection : ' + data.docs[i].collection + ' ||  ' );
+                        str += ('display : ' + data.docs[i].display );
+                        str += '<br>';
+                        str += '</p>';
+                    }
+                    
+                    
+                    Results.html(str);
+                    
+                     
 
 
-    }
+                });
 
-    main();
+            });
+            
+            
+            Sonata.click(function () {
 
-</script>
+                Results.html("Loading..");
+                Results.css({"display" : "block"});
+
+                var str = '';
+
+                $.post('/fetchSonata', {}, function (data, status) {
+
+                    console.log(status);
+
+
+                    for(var i = 0 ; i < data.docs.length; ++i)
+                    {
+                        str += '<p id="' + data.docs[i].UniqueId + '" class="ProductDetails">'
+                        /*id : id,
+                         type : type,
+                         brand : brand,
+                         gender : gender,
+                         price : price,
+                         caseShape : caseShape,
+                         strap : strap,
+                         collection : collection,
+                         display : display*/
+
+                        str += ('type : ' + data.docs[i].type + ' ||  ' );
+                        str += ('brand : ' + data.docs[i].brand + ' ||  ' );
+                        str += ('gender : ' + data.docs[i].gender + ' ||  ' );
+                        str += ('price : ' + data.docs[i].price + ' ||  ' );
+                        str += ('caseShape : ' + data.docs[i].caseShape + ' ||  ' );
+                        str += ('strap : ' + data.docs[i].strap + ' ||  ' );
+                        str += ('collection : ' + data.docs[i].collection + ' ||  ' );
+                        str += ('display : ' + data.docs[i].display );
+                        str += '<br>';
+                        str += '</p>';
+                    }
+
+
+                    Results.html(str);
+
+
+
+
+                });
+
+            });
+
+
+            Rolex.click(function () {
+
+                Results.html("Loading..");
+                Results.css({"display" : "block"});
+
+                var str = '';
+
+                $.post('/fetchRolex', {}, function (data, status) {
+
+                    console.log(status);
+
+
+                    for(var i = 0 ; i < data.docs.length; ++i)
+                    {
+                        str += '<p id="' + data.docs[i].UniqueId + '" class="ProductDetails">'
+                        /*id : id,
+                         type : type,
+                         brand : brand,
+                         gender : gender,
+                         price : price,
+                         caseShape : caseShape,
+                         strap : strap,
+                         collection : collection,
+                         display : display*/
+
+                        str += ('type : ' + data.docs[i].type + ' ||  ' );
+                        str += ('brand : ' + data.docs[i].brand + ' ||  ' );
+                        str += ('gender : ' + data.docs[i].gender + ' ||  ' );
+                        str += ('price : ' + data.docs[i].price + ' ||  ' );
+                        str += ('caseShape : ' + data.docs[i].caseShape + ' ||  ' );
+                        str += ('strap : ' + data.docs[i].strap + ' ||  ' );
+                        str += ('collection : ' + data.docs[i].collection + ' ||  ' );
+                        str += ('display : ' + data.docs[i].display );
+                        str += '<br>';
+                        str += '</p>';
+                    }
+                    Results.html(str);
+                });
+
+            });
+
+
+            $('#results').on('click', '.ProductDetails', function () {
+
+
+                console.log("Product function called");
+                var id = $(this).attr('id');
+                console.log(typeof id);
+                console.log(id);
+                console.log("Product Function called");
+
+                localStorage.setItem('Product', id);
+                
+                console.log("Id is");
+                console.log(id);
+                console.log("Stored in Local Storage");
+                window.location.href = "product.html";
+
+
+            });
+
+            $('.ProductDetails').click(function () {
+
+
+                console.log("Product function called");
+                var id = $(this).attr('id');
+                console.log(id);
+
+
+            });
+
+
+        }
+
+
+        function Product(id)
+        {
+            console.log("Product Function called");
+            localStorage.setItem('Product', id);
+            console.log("Id is");
+            console.log(id);
+            console.log("Stored in Local Storage");
+            window.location.href = "product.html";
+
+        }
+
+        main();
+
+    </script>
 
 </body>
 </html>

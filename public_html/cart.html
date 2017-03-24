@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="helper_files/jquery.js"></script>
+</head>
+<body>
+
+    <div id="Details">
+
+
+    </div>
+
+
+    <script>
+
+        $(function () {
+
+
+            var cart = localStorage.getItem('cart');
+            cart = JSON.parse(cart);
+            console.log("Cart");
+            console.log(cart);
+            $.post('/getcart',{cart : cart},  function (data, status) {
+
+                console.log(status);
+                console.log(data.docs);
+
+                var Details = $('#Details');
+
+                var str = '';
+
+
+                for(var i = 0 ; i < data.docs.length; ++i)
+                {
+                    str += '<p id="' + data.docs[i].UniqueId + '" class="ProductDetails">';
+                    /*id : id,
+                     type : type,
+                     brand : brand,
+                     gender : gender,
+                     price : price,
+                     caseShape : caseShape,
+                     strap : strap,
+                     collection : collection,
+                     display : display*/
+
+                    str += ('type : ' + data.docs[i].type + ' ||  ' );
+                    str += ('brand : ' + data.docs[i].brand + ' ||  ' );
+                    str += ('gender : ' + data.docs[i].gender + ' ||  ' );
+                    str += ('price : ' + data.docs[i].price + ' ||  ' );
+                    str += ('caseShape : ' + data.docs[i].caseShape + ' ||  ' );
+                    str += ('strap : ' + data.docs[i].strap + ' ||  ' );
+                    str += ('collection : ' + data.docs[i].collection + ' ||  ' );
+                    str += ('display : ' + data.docs[i].display );
+                    str += '<br>';
+                    str += '</p>';
+                }
+
+                Details.html(str);
+
+            })
+
+
+
+        });
+
+
+    </script>
+</body>
+</html>

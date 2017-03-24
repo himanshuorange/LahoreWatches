@@ -23,6 +23,68 @@ app.post('/add_watch_details',function (req,res) {
 });
 
 
+app.post('/fetchTitan', function (req, res) {
+    
+    db.FetchTitan(function (docs) {
+       
+        console.log(docs);
+        res.send({docs : docs});
+        
+    });
+
+
+});
+app.post('/fetchRolex', function (req, res) {
+
+    db.FetchRolex(function (docs) {
+
+        console.log(docs);
+        res.send({docs : docs});
+
+    });
+
+
+});
+app.post('/fetchSonata', function (req, res) {
+
+    db.FetchSonata(function (docs) {
+
+        console.log(docs);
+        res.send({docs : docs});
+
+    });
+
+
+});
+
+app.post('/FetchFromId', function (req, res) {
+
+
+    console.log("Fetch from id called");
+
+    db.GetFromID(req.body.id, function (docs) {
+
+        console.log("Sending Result");
+        console.log(docs);
+        res.send({docs : docs});
+
+    });
+
+});
+
+
+app.post('/getcart', function (req, res) {
+
+    db.GetCart(req.body.cart, function (docs) {
+
+        res.send({docs : docs});
+
+    });
+
+
+});
+
+
 app.listen(port, function () {
 
     console.log("Server started on port " + port);

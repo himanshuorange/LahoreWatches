@@ -3,8 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="helper_files/jquery.js"></script>
 </head>
 <body>
+
+
+    <div id="Result">
+        
+        
+    </div>
+    <div id="AddtoCart" style="display : none;">
+        
+        <button id="AddToCartButton">Add to Cart</button>
+        
+    </div>
+    <script>
+        
+        $(function () {
+
+
+            var Result = $('#Result');
+            Result.html("Loading");
+            
+            var id = localStorage.getItem('Product');
+            console.log(id);
+
+            $.post('/FetchFromID', {id : id}, function (data, status) {
+
+                console.log(status);
+                obj = data.docs[0];
+
+                var str = '<p>';
+
+                str += ('type : ' + obj.type + ' ||  ' );
+                str += ('brand : ' + obj.brand + ' ||  ' );
+                str += ('gender : ' + obj.gender + ' ||  ' );
+                str += ('price : ' + obj.price + ' ||  ' );
+                str += ('caseShape : ' + obj.caseShape + ' ||  ' );
+                str += ('strap : ' + obj.strap + ' ||  ' );
+                str += ('collection : ' + obj.collection + ' ||  ' );
+                str += ('display : ' + obj.display );
+                str += '<br>';
+                str += '</p>';
+
+                Result.html(str);
+
+                $('#AddtoCart').css({'display' : 'block'});
+
+                $('#AddtoCart').click(function () {
+
+                    var id = localStorage.getItem('Product');
+                    var cart = localStorage.getItem('cart');
+                    cart = JSON.parse(cart);
+
+                    cart.push(id);
+                    cart = JSON.stringify(cart);
+                    localStorage.setItem('cart', cart);
+                    window.location.href = "index.html";
+
+
+                });
+
+
+
+            });
+
+
+            
+        });
+        
+    </script>
 
 </body>
 </html>
