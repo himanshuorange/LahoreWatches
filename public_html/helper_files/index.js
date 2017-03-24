@@ -34,6 +34,7 @@ $('#google').click(function () {
 
 $("#facebook").click(function () {
     if(state)
+
     {
         alert("Already Logged in");
         return;
@@ -69,7 +70,8 @@ $("#twitter").click(function () {
 
 $(function () {
     firebase.auth().signOut().then(function() {
-        localStorage.clear();
+        localStorage.removeItem('username');
+                localStorage.removeItem('state');
     }, function(error) {
         console.log(error.code);
         console.log(error.message);

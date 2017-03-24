@@ -19,22 +19,28 @@
 
 
             var cart = localStorage.getItem('cart');
+            if(cart == null || typeof cart == 'undefined' || cart == undefined)
+            {
+                cart = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+            cart = localStorage.getItem('cart');
             cart = JSON.parse(cart);
             console.log("Cart");
             console.log(cart);
+            var Details = $('#Details');
+            Details.html("Loading Your Cart....");
             $.post('/getcart',{cart : cart},  function (data, status) {
 
                 console.log(status);
                 console.log(data.docs);
-
-                var Details = $('#Details');
 
                 var str = '';
 
 
                 for(var i = 0 ; i < data.docs.length; ++i)
                 {
-                    str += '<p id="' + data.docs[i].UniqueId + '" class="ProductDetails">';
+                    str += '<p id="' + data.docs[i].UniqueId + 'P" class="ProductDetails">';
                     /*id : id,
                      type : type,
                      brand : brand,
@@ -54,7 +60,28 @@
                     str += ('collection : ' + data.docs[i].collection + ' ||  ' );
                     str += ('display : ' + data.docs[i].display );
                     str += '<br>';
+                    str += '<button id="' + data.docs[i].UniqueId + '">Delete this item</button>';
                     str += '</p>';
+                }
+
+                Details.on('click', 'button', function () {
+
+                    var id = $(this).attr('id');
+                    id = Number(id);
+                    cart = localStorage.getItem('cart');
+                    cart = JSON.parse(cart);
+                    var index = cart.indexOf(id);
+                    cart.splice(index, 1);
+                    cart = JSON.stringify(cart);
+                    localStorage.setItem('cart', cart);
+                    window.location = "";
+                });
+
+
+
+                if(str == '')
+                {
+                    str = 'No items in the cart';
                 }
 
                 Details.html(str);

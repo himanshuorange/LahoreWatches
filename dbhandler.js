@@ -320,6 +320,13 @@ function GetCartItems(cart, callback) {
 
     var temp = [];
 
+    if(cart == null || typeof cart == 'undefined' || cart == undefined)
+    {
+        cart = [];
+        callback([]);
+        return;
+    }
+
     for(var i = 0 ; i < cart.length; ++i)
     {
         temp.push({
