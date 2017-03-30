@@ -85,6 +85,16 @@ app.post('/getcart', function (req, res) {
 });
 
 
+app.post('/all-products', function (req, res) {
+
+    db.AllProducts(function (docs) {
+
+        res.send({docs : docs});
+
+    });
+
+});
+
 app.listen(port, function () {
 
     console.log("Server started on port " + port);

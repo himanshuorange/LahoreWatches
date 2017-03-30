@@ -30,6 +30,9 @@ function new_user(obj,callback)
                         db.close();
                         callback(1);
                     }
+
+
+
                 );
             }
         });
@@ -359,6 +362,93 @@ function GetCartItems(cart, callback) {
 //GetCartItems();
 
 
+function SearchQuery(Queries, callback)
+{
+    var temp = [];
+    var i;
+
+    Queries = [ "Titan", "1", "2", "Square"];
+
+    for(i = 0 ; i < Queries.length; ++i)
+    {
+        if(Queries[i] == '1' || Queries[i] == '2' || Queries[i] == '3' ||Queries[i] == '4' ||Queries[i] == '5' ||Queries[i] == '6' ||Queries[i] == '7' ||Queries[i] == '8' ||Queries[i] == '9' || Queries[i] == '0')
+        {
+            Queries[i] = Number(Queries[i]);
+        }
+
+        /*UniqueId : id,
+         type : type,
+         brand : brand,
+         gender : gender,
+         price : price,
+         caseShape : caseShape,
+         strap : strap,
+         collection : collection,
+         display : display*/
+
+        temp.push({ type : Queries[i]  });
+        temp.push({ brand : Queries[i]  });
+        temp.push({ gender : Queries[i]  });
+        temp.push({ collection : Queries[i]  });
+        temp.push({ caseShape : Queries[i]  });
+        temp.push({ strap : Queries[i]  });
+
+
+
+    }
+
+    console.log("Temp is");
+    console.log(temp);
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+        var handler = db.collection('watch-details');
+        handler.find({ $or : temp }, {"sort": "UniqueId"}).toArray(function(err, docs)
+        {
+            if(err)
+                throw err;
+
+
+            console.log("Results");
+
+            console.log(docs);
+            console.log("Done");
+            callback(docs);
+
+        });
+
+
+    });
+
+
+
+
+}
+
+// SearchQuery();
+
+
+
+function AllProducts(callback)
+{
+    mongoClient.connect(url, function (err, db)
+    {
+        assert.equal(err,null);
+        var handler = db.collection('watch-details');
+        handler.find({ }).toArray(function (err, docs) {
+
+            callback(docs);
+
+        });
+
+    });
+
+
+}
+
+
+
+
 module.exports  = {
     new_user:new_user,
     add_watch_details:add_watch_details,
@@ -366,5 +456,6 @@ module.exports  = {
     FetchRolex : FetchRolex,
     FetchSonata : FetchSonata,
     GetFromID : GetFromID,
-    GetCart : GetCartItems
+    GetCart : GetCartItems,
+    AllProducts : AllProducts
 };
