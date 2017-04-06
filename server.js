@@ -23,39 +23,6 @@ app.post('/add_watch_details',function (req,res) {
 });
 
 
-app.post('/fetchTitan', function (req, res) {
-    
-    db.FetchTitan(function (docs) {
-       
-        console.log(docs);
-        res.send({docs : docs});
-        
-    });
-
-
-});
-app.post('/fetchRolex', function (req, res) {
-
-    db.FetchRolex(function (docs) {
-
-        console.log(docs);
-        res.send({docs : docs});
-
-    });
-
-
-});
-app.post('/fetchSonata', function (req, res) {
-
-    db.FetchSonata(function (docs) {
-
-        console.log(docs);
-        res.send({docs : docs});
-
-    });
-
-
-});
 
 app.post('/FetchFromId', function (req, res) {
 

@@ -3,27 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+
+        .form-control{
+
+            width:25%
+        }
+
+    </style>
+
 </head>
 <body>
 
-// create a form to take all the necessary details about the watch from the admin
 
-<button id="submit">submit</button>
+<div class="container">
+    <h2>Upload a product</h2>
+    <form>
+
+
+        <div class="form-group">
+            <label for="Pimg">Product Images-</label>
+            <br>
+            <span>1.</span> <input type="file" class="form-control" id="Pimg" placeholder="Enter Link" >
+            <span>2.</span> <input type="file" class="form-control" id="Pimg1" placeholder="Enter Link">
+            <span>3.</span> <input type="file" class="form-control" id="Pimg2" placeholder="Enter Link">
+            <span>4.</span> <input type="file" class="form-control" id="Pimg3" placeholder="Enter Link">
+            <span>5.</span> <input type="file" class="form-control" id="Pimg4" placeholder="Enter Link">
+
+        </div>
+
+
+        <div class="form-group">
+            <label for="Pname">Product Name-</label>
+            <input type="text" class="form-control" id="Pname" placeholder="Enter Product Name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ID">Product Code-</label>
+            <input type="number" class="form-control" id="ID" placeholder="Enter Product code" required>
+        </div>
+
+        <div class="form-group">
+            <label for="Pbrand">Product Brand-</label>
+            <input type="text" class="form-control" id="Pbrand" placeholder="Enter Product brand"required >
+        </div>
+        <div class="form-group">
+            <label for="Ptype">Product Type-</label>
+            <input type="text" class="form-control" id="Ptype" placeholder="Enter Product Type"required>
+        </div>
+        <div class="form-group">
+            <label for="Pgender">Gender-</label>
+            <input type="text" class="form-control" id="Pgender" placeholder="Enter Product Gender-"required>
+        </div>
+
+        <div class="form-group">
+            <label for="Pprice">Product Price-</label>
+            <input type="number" class="form-control" id="Pprice" placeholder="Enter Product Price" step=0.01 required>
+        </div>
+
+        <div class="form-group">
+            <label for="Pcaseshape"> Case Shape-</label>
+            <input type="text" class="form-control" id="Pcaseshape" placeholder="Enter Product Case Shape" required>
+        </div>
+
+        <div class="form-group">
+            <label for="Pstrap">Strap Type-</label>
+            <input type="text" class="form-control" id="Pstrap" placeholder="Enter Product Strap" required>
+        </div>
+
+        <div class="form-group">
+            <label for="Pcollection">Product Collection-</label>
+            <input type="number" class="form-control" id="Pcollection" placeholder="Enter Product Collection" step=0.01 required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Pdisplay">Product Display Type-</label>
+            <input type="number" class="form-control" id="Pdisplay" placeholder="Enter Product Display Type" step=0.01 required>
+        </div>
+
+
+        <button type="submit" class="btn btn-default" id="submit">Submit</button>
+    </form>
+</div>
+
+
 </body>
-<script src="helper_files/jquery.js"></script>
+<script src="js/jquery.js"></script>
 <script>
     $("#submit").click(function () {
         // enter the values in the blanks('')
         var obj = {};
-            obj.watch_id='';
-            obj.type='';
-            obj.brand='';
-            obj.gender='';
-            obj.price='';
-            obj.case_shape='';
-            obj.strap='';
-            obj.collection='';
-            obj.display='';
+            obj.watch_id=$("#ID").value;
+            obj.type=$("#Ptype").value;
+            obj.brand=$("#Pbrand").value;
+            obj.gender=$("#Pgender").value;
+            obj.price=$("#Pprice").value;
+            obj.case_shape=$("#Pcaseshape").value;
+            obj.strap=$("#Pstrap").value;
+            obj.collection=$("#Pcollection").value;
+            obj.display=$("#Pdisplay").value;
             $.post('/add_watch_details',obj,function (data,status) {
             });
     })
