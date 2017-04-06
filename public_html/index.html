@@ -8,7 +8,7 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
-    <script src="helper_files/index.js"></script>
+
     <script src="helper_files/firebase.js"></script>
 </head>
 <body>
@@ -46,19 +46,23 @@
         <a href="#"><li>Locations</li></a>
         <a href="#"><li>Contact & Repair</li></a>
     </ul>
-		<span class="right">
+    <span class="right">
 			<span id="cart"><img src="img/cart.png"><span id="cartval" ></span></span>
 			<span class="login">
 
 
-                <div id="LoginDiv"  style="display: none" >Login
+                <div id="LoginDiv"  style="display: none" >
+
             <img src="img/gplus.png" id="google" >
-                    <script src="helper_files/index.js"></script>
+
             </div>
 
 
     <div id="LoggedDiv" style="display:none;">
 
+        <span id="LoginSpan">
+
+                    </span>
 
         <button id="LogOutButton">
 
@@ -157,16 +161,15 @@
     <button id="sub">apply filters</button>
 
 
-    <button class="close">
+    <button class="close"></button>
 </section>
 <section class="main_content" id="results" style="display:none">
 
 </section>
 <div id="fbutton">FILTERS</div>
 
-
+<script src="helper_files/index.js"></script>
 <script>
-
     var username = localStorage.getItem('username');
     var cart = localStorage.getItem('cart');
     var LoggedDiv = $('#LoggedDiv');
@@ -177,8 +180,30 @@
     var Brands = $('#Brands');
     var Results = $('#results');
     var sub=$('#sub');
-
     var T={};
+    var LoginSpan = $('#LoginSpan');
+
+    function RefreshState()
+    {
+        username = localStorage.getItem('username');
+        if(username == null || username == undefined || typeof username == 'undefined')
+        {
+            LoggedDiv.css({'display' : 'none'});
+            LoginDiv.css({'display' : 'inline-block'});
+            localStorage.removeItem('username');
+            localStorage.removeItem('state');
+        }
+        else
+        {
+            LoginDiv.css({'display' : 'none'});
+            LoggedDiv.css({'display' : 'inline-block'});
+            LoginSpan.html('Welcome ' + username + '')
+           // LoggedDiv.prepend(' <span id="user">Welcome ' + username + ' </span> ');
+        }
+
+    }
+
+
 
     function main()
     {
@@ -193,50 +218,40 @@
         {
             LoginDiv.css({'display' : 'none'});
             LoggedDiv.css({'display' : 'inline-block'});
-            LoggedDiv.prepend(' Welcome ' + username + ' ');
-
+          //  LoggedDiv.prepend(' <span id="user">Welcome ' + username + ' </span> ');
+            LoginSpan.html('Welcome ' + username + '')
         }
-
         cart = localStorage.getItem('cart');
-
         if(cart == null || typeof cart == 'undefined' || cart == undefined)
         {
             cart = [];
             localStorage.setItem('cart', JSON.stringify(cart));
         }
-
         cart = localStorage.getItem('cart');
         cart = JSON.parse(cart);
         CartNum.html(cart.length);
-
         CartDiv.click(function () {
-
             window.location.href = "cart.html";
-
         });
-
         $('#LogOutButton').click(function () {
-
             localStorage.removeItem('username');
             localStorage.removeItem('state');
             firebase.auth().signOut().then(function() {
                 localStorage.removeItem('username');
                 localStorage.removeItem('state');
-                location.reload();
+                //  location.reload();
+
+
+                RefreshState();
             }, function(error) {
                 console.log(error.code);
                 console.log(error.message);
-                location.reload();
+                RefreshState();
+                //location.reload();
             });
-
-
         });
-
-
         sub.click(function(){
-
             T = T1;
-
             var k;
             k={};
             k.docs=[];
@@ -244,250 +259,142 @@
             $('input[name="brand"]:checked').each(function() {
                 var temp=this.value;
                 ++l;
-
                 for(i=0;i<T.docs.length;i++)
                 {
-
                     if(T.docs[i].brand==temp)
                     {
                         k.docs.push(T.docs[i]);
-
-
-
                     }
                 }
-
-
             });
-
             if(l != 0)
                 T = k;
-
-
             k = {};
             k.docs = [];
             l = 0;
-
             $('input[name="gender"]:checked').each(function() {
                 var temp=this.value;
                 ++l;
-
                 for(i=0;i<T.docs.length;i++)
                 {
-
                     if(T.docs[i].gender==temp)
                     {
                         k.docs.push(T.docs[i]);
-
-
-
                     }
                 }
             });
-
             if(l != 0)
                 T = k;
-
-
             k = {};
             k.docs = [];
             l = 0;
-
             $('input[name="display"]:checked').each(function() {
                 var temp=this.value;
                 ++l;
-
                 for(i=0;i<T.docs.length;i++)
                 {
-
                     if(T.docs[i].display==temp)
                     {
                         k.docs.push(T.docs[i]);
-
-
-
                     }
                 }
             });
-
-
             if(l != 0)
                 T = k;
-
-
             k = {};
             k.docs = [];
             l = 0;
-
-
-
-
             $('input[name="type"]:checked').each(function() {
                 var temp=this.value;
                 ++l;
-
                 for(i=0;i<T.docs.length;i++)
                 {
-
                     if(T.docs[i].type==temp)
                     {
                         k.docs.push(T.docs[i]);
-
-
-
                     }
                 }
-
             });
-
-
             if(l != 0)
                 T = k;
-
-
             k = {};
             k.docs = [];
             l = 0;
-
-
-
             $('input[name="caseshape"]:checked').each(function() {
                 var temp=this.value;
                 ++l;
-
                 for(i=0;i<T.docs.length;i++)
                 {
-
                     if(T.docs[i].caseShape==temp)
                     {
                         k.docs.push(T.docs[i]);
-
-
-
                     }
                 }
-
-
             });
-
-
             if(l != 0)
                 T = k;
-
-
             k = {};
             k.docs = [];
             l = 0;
-
-
-
-
             $('input[name="strap"]:checked').each(function() {
                 var temp=this.value;
                 ++l;
-
                 for(i=0;i<T.docs.length;i++)
                 {
-
                     if(T.docs[i].strap==temp)
                     {
                         k.docs.push(T.docs[i]);
-
-
                     }
                 }
-
             });
-
-
-
-
             if(l != 0)
                 T = k;
-
             str='';
             Results.html("Loading..");
             Results.css({"display" : "block"});
-
-
             for(var i = 0 ; i < T.docs.length; ++i)
             {
                 str +='<div class="item"> <img src="img/item.jpg"> <span class="wname">'+T.docs[i].collection+'</span>, <div><span class="wbrand"><b>'+T.docs[i].brand+'</b></span> <span class="wmodel">'+T.docs[i].UniqueId+'</span></div> <div><span class="price">&#8377; '+T.docs[i].price+'</span></div> </div>';
-
             }
             Results.html(str);
             $(window).scrollTop(0);
-
         });
-
-
-
-
         $(Results).on('click', '.ProductDetails', function () {
-
-
             console.log("Product function called");
             var id = $(this).attr('id');
             console.log(typeof id);
             console.log(id);
             console.log("Product Function called");
-
             localStorage.setItem('Product', id);
-
             console.log("Id is");
             console.log(id);
             console.log("Stored in Local Storage");
             window.location.href = "product.html";
-
-
         });
-
         $('.ProductDetails').click(function () {
-
-
             console.log("Product function called");
             var id = $(this).attr('id');
             console.log(id);
-
-
         });
-
         var T1;
-
         $(document).ready(function () {
-
-
             var str='';
             Results.html("Loading..");
             Results.css({"display" : "block"});
-
             console.log("Hello");
             count=1;
-
             $.post('/all-products', {}, function (data, status) {
-
                 console.log(status);
-
                 T=data;
-
                 T1 = T;
-
-
                 for(var i = 0 ; i < data.docs.length; ++i)
                 {
                     str +='<div class="item"> <img src="img/item.jpg"> <span class="wname">'+data.docs[i].collection+'</span>, <div><span class="wbrand"><b>'+data.docs[i].brand+'</b></span> <span class="wmodel">'+data.docs[i].UniqueId+'</span></div> <div><span class="price">&#8377; '+data.docs[i].price+'</span></div> </div>';
-
                 }
                 Results.html(str);
             });
-
-
         });
-
-
     }
-
-
     function Product(id)
     {
         console.log("Product Function called");
@@ -496,11 +403,8 @@
         console.log(id);
         console.log("Stored in Local Storage");
         window.location.href = "product.html";
-
     }
-
     main();
-
 </script>
 
 
