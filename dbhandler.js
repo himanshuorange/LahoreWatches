@@ -1,7 +1,7 @@
 const mongodb = require('mongodb');
 const mongoClient = mongodb.MongoClient;
 const assert = require('assert');
-const url = "mongodb://quizappp:quizappp@ds117859.mlab.com:17859/quizappp";
+const url = "mongodb://hargun:hargun@ds117859.mlab.com:17859/quizappp";
 function new_user(obj,callback)
 {
     mongoClient.connect(url, function (err, db)
@@ -229,65 +229,6 @@ function AddTemporaryData()
 
  // AddTemporaryData();
 
-
-function FetchTitan(callback) {
-
-    mongoClient.connect(url, function (err, db)
-    {
-        assert.equal(err,null);
-
-        var handler = db.collection('watch-details');
-
-        handler.find({brand : 'Titan'}).toArray(function (err, docs) {
-
-            callback(docs);
-
-        });
-
-    });
-
-}
-
-function FetchSonata(callback) {
-
-    mongoClient.connect(url, function (err, db)
-    {
-        assert.equal(err,null);
-
-        var handler = db.collection('watch-details');
-
-        handler.find({brand : 'Sonata'}).toArray(function (err, docs) {
-
-            callback(docs);
-
-        });
-
-    });
-
-
-
-}
-
-function FetchRolex(callback) {
-
-    mongoClient.connect(url, function (err, db)
-    {
-        assert.equal(err,null);
-
-        var handler = db.collection('watch-details');
-
-        handler.find({brand : 'Rolex'}).toArray(function (err, docs) {
-
-            callback(docs);
-
-        });
-
-    });
-
-
-
-}
-
 function GetFromID (id11, callback) {
     console.log("Id is ");
     console.log(id11);
@@ -361,79 +302,13 @@ function GetCartItems(cart, callback) {
 
 //GetCartItems();
 
-
-function SearchQuery(Queries, callback)
-{
-    var temp = [];
-    var i;
-
-    Queries = [ "Titan", "1", "2", "Square"];
-
-    for(i = 0 ; i < Queries.length; ++i)
-    {
-        if(Queries[i] == '1' || Queries[i] == '2' || Queries[i] == '3' ||Queries[i] == '4' ||Queries[i] == '5' ||Queries[i] == '6' ||Queries[i] == '7' ||Queries[i] == '8' ||Queries[i] == '9' || Queries[i] == '0')
-        {
-            Queries[i] = Number(Queries[i]);
-        }
-
-        /*UniqueId : id,
-         type : type,
-         brand : brand,
-         gender : gender,
-         price : price,
-         caseShape : caseShape,
-         strap : strap,
-         collection : collection,
-         display : display*/
-
-        temp.push({ type : Queries[i]  });
-        temp.push({ brand : Queries[i]  });
-        temp.push({ gender : Queries[i]  });
-        temp.push({ collection : Queries[i]  });
-        temp.push({ caseShape : Queries[i]  });
-        temp.push({ strap : Queries[i]  });
-
-
-
-    }
-
-    console.log("Temp is");
-    console.log(temp);
-    mongoClient.connect(url, function (err, db)
-    {
-        assert.equal(err,null);
-        var handler = db.collection('watch-details');
-        handler.find({ $or : temp }, {"sort": "UniqueId"}).toArray(function(err, docs)
-        {
-            if(err)
-                throw err;
-
-
-            console.log("Results");
-
-            console.log(docs);
-            console.log("Done");
-            callback(docs);
-
-        });
-
-
-    });
-
-
-
-
-}
-
-// SearchQuery();
-
-
-
 function AllProducts(callback)
 {
+    console.log("Hrllo");
     mongoClient.connect(url, function (err, db)
     {
-        assert.equal(err,null);
+        if(err)
+            throw err;
         var handler = db.collection('watch-details');
         handler.find({ }).toArray(function (err, docs) {
 
@@ -452,9 +327,6 @@ function AllProducts(callback)
 module.exports  = {
     new_user:new_user,
     add_watch_details:add_watch_details,
-    FetchTitan : FetchTitan,
-    FetchRolex : FetchRolex,
-    FetchSonata : FetchSonata,
     GetFromID : GetFromID,
     GetCart : GetCartItems,
     AllProducts : AllProducts
